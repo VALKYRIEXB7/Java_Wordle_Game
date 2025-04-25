@@ -2,22 +2,56 @@ import java.util.ArrayList;
 
 public class WordGame {
 
-    ArrayList<String> letter3;
-    ArrayList<String> letter4;
-    ArrayList<String> letter5;
-    ArrayList<String> letter6;
-    ArrayList<String> letter7;
-    ArrayList<String> letter8;
-    ArrayList<String> letter9;
-    ArrayList<String> letter10;
+    ArrayList<String> letter3 = new ArrayList<String>();
+    ArrayList<String> letter4 = new ArrayList<String>();
+    ArrayList<String> letter5 = new ArrayList<String>();
+    ArrayList<String> letter6 = new ArrayList<String>();
+    ArrayList<String> letter7 = new ArrayList<String>();
+    ArrayList<String> letter8 = new ArrayList<String>();
+    ArrayList<String> letter9 = new ArrayList<String>();
+    ArrayList<String> letter10 = new ArrayList<String>();
 
     public WordGame() {
         fillWords();
     }
 
+    public void playGame(){
+        int numLetters = pickRandomNumLetters();
+        String word = pickRandomWord(selectWordList(numLetters));
+        System.out.println("Guess the word: " + word);
+    }
+
     public int pickRandomNumLetters(){
         int randomNum = (int) (Math.random() * 8) + 3;
         return randomNum;
+    }
+
+    public String pickRandomWord(ArrayList<String> list){
+        int randomIndex = (int) (Math.random() * list.size());
+        return list.get(randomIndex);
+    }
+
+    public ArrayList<String> selectWordList(int numLetters) {
+        switch(numLetters) {
+            case 3:
+                return letter3;
+            case 4:
+                return letter4;
+            case 5:
+                return letter5;
+            case 6:
+                return letter6;
+            case 7:
+                return letter7;
+            case 8:
+                return letter8;
+            case 9:
+                return letter9;
+            case 10:
+                return letter10;
+            default:
+                return letter5; // default to 5 letter words if something goes wrong
+        }
     }
 
     public void fillWords() {
