@@ -15,6 +15,11 @@ public class WordGame {
         fillWords();
     }
 
+    public int pickRandomNumLetters(){
+        int randomNum = (int) (Math.random() * 8) + 3;
+        return randomNum;
+    }
+
     public void fillWords() {
         /* adds basic list of letter-respective words to ArrayList */
 
