@@ -25,6 +25,11 @@ public class WordGame {
             System.out.println("You have " + (6-i) + " guesses to guess the " + numLetters + " letter word.");
             System.out.println("Guess: ");
             String guess = s.nextLine();
+            if(guess.length() != numLetters){
+                System.out.println("Please enter " + numLetters + " letter word.");
+                i--;
+                continue;
+            }
             if(!checker(guess, word, numLetters).contains("B") && !checker(guess, word, numLetters).contains("Y")){
                 System.out.println(checker(guess, word, numLetters));
                 System.out.println("You guessed the word!");
