@@ -18,6 +18,7 @@ public class WordGame {
 
     public void playGame(){
         Scanner s = new Scanner(System.in);
+        int winCt = 0;
         int numLetters = pickRandomNumLetters();
         String word = pickRandomWord(selectWordList(numLetters));
         for(int i = 0; i < 6; i++){
@@ -27,13 +28,16 @@ public class WordGame {
             if(!checker(guess, word, numLetters).contains("B") && !checker(guess, word, numLetters).contains("Y")){
                 System.out.println(checker(guess, word, numLetters));
                 System.out.println("You guessed the word!");
+                winCt++;
                 break;
             }
             else{
                 System.out.println(checker(guess, word, numLetters));
             }
         }
-        System.out.println("The word was " + word + " You should play again!");
+        if(winCt == 0){
+            System.out.println("The word was " + word + " You should play again!");
+        }
     }
 
     public String checker(String guess, String word, int numLett){
