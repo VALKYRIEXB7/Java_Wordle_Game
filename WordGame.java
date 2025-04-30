@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class WordGame {
 
@@ -16,9 +17,18 @@ public class WordGame {
     }
 
     public void playGame(){
+        Scanner s = new Scanner(System.in);
         int numLetters = pickRandomNumLetters();
         String word = pickRandomWord(selectWordList(numLetters));
-        System.out.println("Guess the word: " + word);
+        for(int i = 0; i < 6; i++){
+            System.out.println("You have six guesses to guess the " + numLetters + " letter word.");
+            System.out.println("Guess: ");
+            String guess = s.nextLine();
+        }
+    }
+
+    public String checker(String guess, String word, int numLett){
+        
     }
 
     public int pickRandomNumLetters(){
@@ -106,91 +116,86 @@ public class WordGame {
         letter5.add("water");
         letter5.add("power");
         letter5.add("story");
-        letter5.add("friend");
+        letter5.add("float");
 
-        /* adds six letter words to ArrayList */
-        letter6.add("beauty");
-        letter6.add("nature");
-        letter6.add("wisdom");
-        letter6.add("freedom");
-        letter6.add("spirit");
-        letter6.add("garden");
-        letter6.add("window");
-        letter6.add("summer");
-        letter6.add("winter");
-        letter6.add("spring");
-        letter6.add("autumn");
-        letter6.add("memory");
-        letter6.add("shadow");
-        letter6.add("silver");
-        letter6.add("golden");
-
-        /* adds seven letter words to ArrayList */
-        letter7.add("journey");
-        letter7.add("freedom");
-        letter7.add("wonder");
-        letter7.add("courage");
-        letter7.add("diamond");
-        letter7.add("rainbow");
-        letter7.add("morning");
+        letter6.add("heaven");
+        letter6.add("report");
+        letter6.add("anyway");
+        letter6.add("during");
+        letter6.add("center");
+        letter6.add("number");
+        letter6.add("zigzag");
+        letter6.add("jinxed");
+        letter6.add("raptor");
+        letter6.add("forest");
+        letter6.add("helper");
+        letter6.add("jungle");
+        letter6.add("nachos");
+        letter6.add("delete");
+        letter6.add("random");
+        
+        letter7.add("clapped");
         letter7.add("evening");
-        letter7.add("forever");
-        letter7.add("silence");
-        letter7.add("whisper");
-        letter7.add("dancing");
-        letter7.add("singing");
-        letter7.add("dreaming");
-        letter7.add("shining");
+        letter7.add("million");
+        letter7.add("flowers");
+        letter7.add("conduct");
+        letter7.add("meaning");
+        letter7.add("densely");
+        letter7.add("circuit");
+        letter7.add("desktop");
+        letter7.add("smashed");
+        letter7.add("sneaker");
+        letter7.add("blocked");
+        letter7.add("forfeit");
+        letter7.add("renewed");
+        letter7.add("refresh");
 
-        /* adds eight letter words to ArrayList */
-        letter8.add("adventure");
-        letter8.add("beautiful");
-        letter8.add("champion");
-        letter8.add("discover");
-        letter8.add("elephant");
-        letter8.add("fountain");
-        letter8.add("grateful");
-        letter8.add("harmony");
-        letter8.add("infinity");
-        letter8.add("journey");
-        letter8.add("kindness");
-        letter8.add("laughter");
-        letter8.add("mountain");
-        letter8.add("paradise");
-        letter8.add("rainbow");
+        letter8.add("abnormal");
+        letter8.add("blizzard");
+        letter8.add("graphite");
+        letter8.add("notebook");
+        letter8.add("outreach");
+        letter8.add("bookmark");
+        letter8.add("elevator");
+        letter8.add("landmine");
+        letter8.add("sprinter");
+        letter8.add("sneakers");
+        letter8.add("overcome");
+        letter8.add("hydrogen");
+        letter8.add("vagabond");
+        letter8.add("calendar");
+        letter8.add("tangible");
 
-        /* adds nine letter words to ArrayList */
         letter9.add("adventure");
-        letter9.add("beautiful");
         letter9.add("butterfly");
-        letter9.add("chocolate");
-        letter9.add("discovery");
-        letter9.add("education");
-        letter9.add("friendship");
-        letter9.add("happiness");
-        letter9.add("infinite");
-        letter9.add("knowledge");
-        letter9.add("lightning");
-        letter9.add("mountain");
-        letter9.add("paradise");
-        letter9.add("rainbow");
-        letter9.add("sunshine");
+        letter9.add("handstand");
+        letter9.add("dangerous");
+        letter9.add("nightfall");
+        letter9.add("telephone");
+        letter9.add("voluntary");
+        letter9.add("overgrown");
+        letter9.add("steamboat");
+        letter9.add("tailoring");
+        letter9.add("waterfall");
+        letter9.add("signature");
+        letter9.add("fireproof");
+        letter9.add("grayscale");
+        letter9.add("evergreen");
 
-        /* adds ten letter words to ArrayList */
-        letter10.add("adventure");
-        letter10.add("beautiful");
-        letter10.add("butterfly");
-        letter10.add("chocolate");
-        letter10.add("discovery");
-        letter10.add("education");
-        letter10.add("friendship");
-        letter10.add("happiness");
-        letter10.add("infinity");
-        letter10.add("knowledge");
-        letter10.add("lightning");
-        letter10.add("mountain");
-        letter10.add("paradise");
-        letter10.add("rainbow");
-        letter10.add("sunshine");
+        letter10.add("historical");
+        letter10.add("adventures");
+        letter10.add("chocolates");
+        letter10.add("dissension");
+        letter10.add("monumental");
+        letter10.add("telescoped");
+        letter10.add("volleyball");
+        letter10.add("nightlight");
+        letter10.add("rectangles");
+        letter10.add("crocodiles");
+        letter10.add("telepathic");
+        letter10.add("millennium");
+        letter10.add("tremendous");
+        letter10.add("regulation");
+        letter10.add("motivation");
     }
 }
