@@ -3,14 +3,14 @@ import java.util.Scanner;
 
 public class WordGame {
 
-    ArrayList<String> letter3 = new ArrayList<String>();
-    ArrayList<String> letter4 = new ArrayList<String>();
-    ArrayList<String> letter5 = new ArrayList<String>();
-    ArrayList<String> letter6 = new ArrayList<String>();
-    ArrayList<String> letter7 = new ArrayList<String>();
-    ArrayList<String> letter8 = new ArrayList<String>();
-    ArrayList<String> letter9 = new ArrayList<String>();
-    ArrayList<String> letter10 = new ArrayList<String>();
+    ArrayList<String> letter3 = new ArrayList<>();
+    ArrayList<String> letter4 = new ArrayList<>();
+    ArrayList<String> letter5 = new ArrayList<>();
+    ArrayList<String> letter6 = new ArrayList<>();
+    ArrayList<String> letter7 = new ArrayList<>();
+    ArrayList<String> letter8 = new ArrayList<>();
+    ArrayList<String> letter9 = new ArrayList<>();
+    ArrayList<String> letter10 = new ArrayList<>();
 
     public WordGame() {
         fillWords();
@@ -21,14 +21,49 @@ public class WordGame {
         int numLetters = pickRandomNumLetters();
         String word = pickRandomWord(selectWordList(numLetters));
         for(int i = 0; i < 6; i++){
-            System.out.println("You have six guesses to guess the " + numLetters + " letter word.");
+            System.out.println("You have " + (6-i) + " guesses to guess the " + numLetters + " letter word.");
             System.out.println("Guess: ");
             String guess = s.nextLine();
+            if(!checker(guess, word, numLetters).contains("B") && !checker(guess, word, numLetters).contains("Y")){
+                System.out.println(checker(guess, word, numLetters));
+                System.out.println("You guessed the word!");
+                break;
+            }
+            else{
+                System.out.println(checker(guess, word, numLetters));
+            }
         }
+        System.out.println("The word was " + word + " You should play again!");
     }
 
     public String checker(String guess, String word, int numLett){
-        
+        String out = "";
+        for(int i = 0; i < numLett; i++){
+            String letter = guess.substring(i, i+1);
+            if(word.substring(i, i+1).equals(letter)){
+                out += " G ";
+            }
+            else if(word.contains(letter)){
+                // Count how many times this letter appears in the guess up to this point
+                int countInGuess = 0;
+                for(int j = 0; j < i; j++){
+                    if(guess.substring(j, j+1).equals(letter)){
+                        countInGuess++;
+                    }
+                }
+                // Check if there's another occurrence of this letter in the word
+                if(findNthOccurrence(word, letter, countInGuess + 1) != -1){
+                    out += " Y ";
+                }
+                else{
+                    out += " B ";
+                }
+            }
+            else{
+                out += " B ";
+            }
+        }
+        return out;
     }
 
     public int pickRandomNumLetters(){
@@ -62,6 +97,22 @@ public class WordGame {
             default:
                 return letter5; // default to 5 letter words if something goes wrong
         }
+    }
+
+    public int findNthOccurrence(String str, String target, int n) {
+        int count = 0;
+        int index = -1;
+        
+        for (int i = 0; i < str.length(); i++) {
+            if (str.substring(i, i + 1).equals(target)) {
+                count++;
+                if (count == n) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
     }
 
     public void fillWords() {
@@ -198,4 +249,5 @@ public class WordGame {
         letter10.add("regulation");
         letter10.add("motivation");
     }
+
 }

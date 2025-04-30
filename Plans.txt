@@ -1,0 +1,5 @@
+1. For checker method
+    1. For green and black, split into substrings for each letter, the compare each of the indeces
+    2. for yellow, compare each letter of guess to the full string, and if index matches, return green, else if .contains > -1, return yellow, else return black
+2. to take input
+    1. take input parameter in playgame method from main method containing scanner
