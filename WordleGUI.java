@@ -1,15 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-
-import static java.nio.file.StandardOpenOption.CREATE;
+import javax.swing.*;
 
 public class WordleGUI extends JFrame{
     JPanel mainPnl;
@@ -26,7 +17,7 @@ public class WordleGUI extends JFrame{
         title.setFont(new Font("Impact", Font.PLAIN, 36));
         mainPnl.add(title, BorderLayout.NORTH);
 
-        createGrid("Dense");
+        createGrid("test");
         mainPnl.add(gridPnl, BorderLayout.CENTER);
 
         createBottom();
@@ -34,7 +25,7 @@ public class WordleGUI extends JFrame{
         add(mainPnl);
 
         setTitle("Wordle Hard???");
-        setSize(600, 1000); // Set a size
+        setSize(800, 1000); // Set a size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the window
 
@@ -73,7 +64,7 @@ public class WordleGUI extends JFrame{
 
     private void createGrid(String exampleWord){
         int WIDTH = exampleWord.length();
-        int HEIGHT = exampleWord.length() + 1;
+        int HEIGHT = 6;
         String letter = " ";
         gridPnl = new JPanel();
         gridPnl.setLayout(new GridLayout(HEIGHT, WIDTH));
