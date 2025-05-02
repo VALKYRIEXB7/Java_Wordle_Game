@@ -1,15 +1,25 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import javax.swing.*;
+import java.util.ArrayList;
 
-public class WordleGUI extends JFrame{
+public class WordleGUI extends JFrame {
     JPanel mainPnl;
     JPanel gridPnl;
     JPanel bottomPnl;
     JButton quit;
     JButton genWord;
-    //Random r;
-    public WordleGUI(){
+    private WordleTile[][] tiles;
+    private int currentRow = 0;
+    private int currentCol = 0;
+    private String targetWord;
+    private static final int MAX_GUESSES = 6;
+    private static final int WORD_LENGTH = 5;
+    private WordGame wordGame;
+    private int numLets;
+
+    public WordleGUI() {
+        wordGame = new WordGame();
         mainPnl = new JPanel();
         mainPnl.setLayout(new BorderLayout());
 
@@ -17,7 +27,7 @@ public class WordleGUI extends JFrame{
         title.setFont(new Font("Impact", Font.PLAIN, 36));
         mainPnl.add(title, BorderLayout.NORTH);
 
-        createGrid("test");
+        createGrid();
         mainPnl.add(gridPnl, BorderLayout.CENTER);
 
         createBottom();
@@ -25,75 +35,131 @@ public class WordleGUI extends JFrame{
         add(mainPnl);
 
         setTitle("Wordle Hard???");
-        setSize(800, 1000); // Set a size
+        setSize(600, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the window
+        setLocationRelativeTo(null);
 
-        //fetchWord();
+        numLets = wordGame.pickRandomNumLetters();
+
+        // Set up keyboard input
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                handleKeyPress(e);
+            }
+        });
+        setFocusable(true);
+        requestFocus();
+
+        // Initialize game
+        targetWord = fetchWord();
+    }
+
+    private void handleKeyPress(KeyEvent e) {
+        if (currentRow >= MAX_GUESSES) return;
+
+        char keyChar = e.getKeyChar();
+        if (keyChar >= 'a' && keyChar <= 'z') {
+            // Handle letter input
+            if (currentCol < WORD_LENGTH) {
+                tiles[currentRow][currentCol].setText(String.valueOf(keyChar).toUpperCase());
+                currentCol++;
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+            // Handle backspace
+            if (currentCol > 0) {
+                currentCol--;
+                tiles[currentRow][currentCol].setText("");
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            // Handle enter
+            if (currentCol == WORD_LENGTH) {
+                checkGuess();
+            }
+        }
+    }
+
+    private void checkGuess() {
+        StringBuilder guess = new StringBuilder();
+        for (int i = 0; i < WORD_LENGTH; i++) {
+            guess.append(tiles[currentRow][i].getText().toLowerCase());
+        }
+
+        // Use WordGame's checker method
+        String result = wordGame.checker(guess.toString(), targetWord, WORD_LENGTH);
+        String[] results = result.trim().split("\\s+");
+
+        // Update tile colors based on WordGame's checker results
+        for (int i = 0; i < WORD_LENGTH; i++) {
+            if (results[i].equals("G")) {
+                tiles[currentRow][i].setBackground(Color.GREEN);
+            } else if (results[i].equals("Y")) {
+                tiles[currentRow][i].setBackground(Color.YELLOW);
+            } else {
+                tiles[currentRow][i].setBackground(Color.GRAY);
+            }
+        }
+
+        // Check if won
+        if (guess.toString().equals(targetWord)) {
+            JOptionPane.showMessageDialog(this, "Congratulations! You won!");
+            resetGame();
+        } else {
+            currentRow++;
+            currentCol = 0;
+            if (currentRow >= MAX_GUESSES) {
+                JOptionPane.showMessageDialog(this, "Game Over! The word was: " + targetWord);
+                resetGame();
+            }
+        }
+    }
+
+    private void resetGame() {
+        currentRow = 0;
+        currentCol = 0;
+        targetWord = fetchWord();
+        for (int row = 0; row < MAX_GUESSES; row++) {
+            for (int col = 0; col < WORD_LENGTH; col++) {
+                tiles[row][col].setText("");
+                tiles[row][col].setBackground(null);
+            }
+        }
+    }
+
+    private void createGrid() {
+        gridPnl = new JPanel();
+        gridPnl.setLayout(new GridLayout(MAX_GUESSES, WORD_LENGTH));
+        tiles = new WordleTile[MAX_GUESSES][WORD_LENGTH];
+
+        for (int row = 0; row < MAX_GUESSES; row++) {
+            for (int col = 0; col < WORD_LENGTH; col++) {
+                tiles[row][col] = new WordleTile(row, col, "");
+                tiles[row][col].setFont(new Font("Impact", Font.PLAIN, 36));
+                tiles[row][col].setFocusable(false);
+                gridPnl.add(tiles[row][col]);
+            }
+        }
     }
 
     private String fetchWord() {
-        JOptionPane.showMessageDialog(this, "Implement later, IDK how to read files goodly");
-        /*ArrayList<String> words = new ArrayList<>();
-        String randomWord = ""; // Default value
-        try {
-            Path file = new File("src/ExampleWords").toPath();
-            BufferedReader reader = Files.newBufferedReader(file);
-
-            while (reader.ready()) {
-                words.add(reader.readLine().toLowerCase());
-            }
-            reader.close();
-
-            if (!words.isEmpty()) {
-                int randomItem = r.nextInt(words.size());
-                randomWord = words.get(randomItem);
-                System.out.println(randomWord);
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("FILE NOT FOUND");
-            e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return randomWord;*/
-        return "Stinky";
+        // Use WordGame's word list for 5-letter words
+        int rando = wordGame.pickRandomNumLetters();
+        ArrayList<String> list = new ArrayList<String>();
+        list = wordGame.selectWordList(rando);
+        return wordGame.pickRandomWord(list);
     }
 
-
-    private void createGrid(String exampleWord){
-        int WIDTH = exampleWord.length();
-        int HEIGHT = 6;
-        String letter = " ";
-        gridPnl = new JPanel();
-        gridPnl.setLayout(new GridLayout(HEIGHT, WIDTH));
-
-        for(int col=0; col < HEIGHT; col++)
-        {
-            for(int row=0; row < WIDTH; row++)
-            {
-                WordleTile tile = new WordleTile(row, col, letter);
-                gridPnl.add(tile);
-
-                tile.setFont(new Font("Impact", Font.PLAIN, 10));
-            }
-        }
-        System.out.println("works!!!");
-    }
-
-    private void createBottom(){
+    private void createBottom() {
         bottomPnl = new JPanel();
-        bottomPnl.setLayout(new GridLayout(1,2));
+        bottomPnl.setLayout(new GridLayout(1, 2));
 
         quit = new JButton("QUIT");
         quit.addActionListener((ActionEvent ae) -> System.exit(0));
 
-        genWord = new JButton("GEN WORD");
-        genWord.addActionListener((ActionEvent gen) -> fetchWord());
+        genWord = new JButton("NEW GAME");
+        genWord.addActionListener((ActionEvent ae) -> resetGame());
 
         bottomPnl.add(quit);
         bottomPnl.add(genWord);
-
     }
 }
